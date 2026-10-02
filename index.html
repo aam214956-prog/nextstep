@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NextStep - Learn & Grow</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #101827;
+  color: #fff;
+}
+header {
+  padding: 24px 20px;
+  background: #17243a;
+}
+header h1 { color: #65e0bc; margin: 0; }
+header p { color: #bdc8d8; }
+main { padding: 20px; max-width: 700px; margin: auto; }
+.card {
+  background: #1b2a40;
+  padding: 20px;
+  margin: 16px 0;
+  border-radius: 18px;
+}
+h2 { color: #65e0bc; }
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 18px;
+  background: #65e0bc;
+  color: #102033;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px 0;
+}
+button:disabled { opacity: .5; }
+.option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #2b3c55;
+  color: white;
+}
+#feedback { color: #65e0bc; }
+.stat { font-size: 22px; font-weight: bold; }
+</style>
+</head>
+<body>
+<header>
+  <h1>NextStep 🚀</h1>
+  <p>Learn English. Earn points. Grow every day.</p>
+</header>
+
+<main>
+  <section class="card">
+    <h2>Your Progress</h2>
+    <p class="stat">⭐ <span id="points">0</span> Points</p>
+    <p>Complete lessons and earn points!</p>
+  </section>
+
+  <section class="card">
+    <h2>📘 English Lesson</h2>
+    <p>What does "Improve" mean?</p>
+    <button class="option" onclick="answer(0)">A. To get better</button>
+    <button class="option" onclick="answer(1)">B. To sleep</button>
+    <button class="option" onclick="answer(2)">C. To forget</button>
+    <p id="feedback"></p>
+  </section>
+
+  <section class="card">
+    <h2>🎯 Daily Goal</h2>
+    <p>Learn one new English word today.</p>
+    <button onclick="goal()">Complete Goal</button>
+    <p id="goalMessage"></p>
+  </section>
+
+  <section class="card">
+    <h2>🌱 Personal Growth</h2>
+    <p>Small steps every day lead to big results.</p>
+    <p>Today's challenge: Write one sentence in English.</p>
+  </section>
+</main>
+
+<script>
+let points = Number(localStorage.getItem("nextstepPoints")) || 0;
+let quizDone = localStorage.getItem("nextstepQuiz") === "yes";
+let goalDone = localStorage.getItem("nextstepGoal") === "yes";
+
+function update() {
+  document.getElementById("points").textContent = points;
+}
+function answer(choice) {
+  if (quizDone) {
+    document.getElementById("feedback").textContent =
+      "You have already completed this lesson!";
+    return;
+  }
+  if (choice === 0) {
+    points += 10;
+    quizDone = true;
+    localStorage.setItem("nextstepQuiz", "yes");
+    document.getElementById("feedback").textContent =
+      "Correct! You earned 10 points.";
+  } else {
+    document.getElementById("feedback").textContent =
+      "Not quite. Try again!";
+  }
+  localStorage.setItem("nextstepPoints", points);
+  update();
+}
+function goal() {
+  if (goalDone) {
+    document.getElementById("goalMessage").textContent =
+      "You already completed today's goal!";
+    return;
+  }
+  points += 20;
+  goalDone = true;
+  localStorage.setItem("nextstepGoal", "yes");
+  localStorage.setItem("nextstepPoints", points);
+  document.getElementById("goalMessage").textContent =
+    "Great job! You earned 20 points.";
+  update();
+}
+update();
+if (quizDone) {
+  document.getElementById("feedback").textContent =
+    "Lesson completed. You earned 10 points.";
+}
+if (goalDone) {
+  document.getElementById("goalMessage").textContent =
+    "Today's goal completed!";
+}
+</script>
+</body>
+</html>
